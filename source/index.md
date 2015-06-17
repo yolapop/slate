@@ -199,7 +199,7 @@ complaints | null | List of complaints in this specialty. English version is req
 
 # Requested Appointments
 
-Requested Appointments is Waiting List, i.e the appointments that have to be **approved** or **rejected** by a hospital admin.
+Requested Appointments a.k.a. Waiting List, i.e the appointments that have to be **approved** or **rejected** by a hospital admin.
 
 ## Get A Requested Appointment
 
@@ -208,7 +208,7 @@ GET /api/appointments/557d6c43f6d022100c1bd2fa HTTP/1.1
 Accept: application/vnd.api+json
 ```
 
-> The above command returns JSON structured like this:
+> The above request returns JSON structured like this:
 
 ```json
 {
@@ -259,7 +259,7 @@ GET /api/appointments?hospital=557b4a8dd0cd9dcc10e35a59&page=1&include=visiting_
 Accept: application/vnd.api+json
 ```
 
-> The above command returns JSON structured like this:
+> The above request returns JSON structured like this:
 
 ```json
 {
@@ -408,7 +408,7 @@ GET /api/approved-appointments/557b32d8ec6036e00e57995a HTTP/1.1
 Accept: application/vnd.api+json
 ```
 
-> The above command returns JSON structured like this:
+> The above request returns JSON structured like this:
 
 ```json
 {
@@ -457,6 +457,10 @@ lang | en | The language to display the resource. Either `en` or `id`.
 
 <aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
 
+## Get All Approved Appointments
+
+Forbidden.
+
 ## Get All Approved Appointment In A Hospital
 
 ```http
@@ -464,7 +468,7 @@ GET /api/approved-appointments?hospital=557b291afaef37c8147d717d HTTP/1.1
 Accept: application/vnd.api+json
 ```
 
-> The above command returns JSON structured like this:
+> The above request returns JSON structured like this:
 
 ```json
 {
@@ -494,12 +498,6 @@ Accept: application/vnd.api+json
 ```
 
 Get all approved appointments in a hospital, sorted ascending by approved time and creation time. This list is paginated with 10 items per page.
-
-The response will have a `status` field that is one of these values: 
-
-* `waiting`: the patient not yet confirmed the appointment time. 
-* `accepted`: the patient accepted the appointment and ready to go to hospital. 
-* `cancelled`: the patient cancelled the appointment.
 
 ### HTTP Request
 
@@ -595,13 +593,13 @@ id | The appointment's ID.
 
 Parameter | Default | Description
 --------- | ------- | -----------
-status | required | The status of the approved appointment.
+status | required | The status of the approved appointment. Either `accepted`, `waiting`, or `cancelled`.
 
 <aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
 
 # Users
 
-Or `Patient`
+A.k.a. `Patient`
 
 ## Get A User
 
