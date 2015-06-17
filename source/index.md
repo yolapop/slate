@@ -241,6 +241,13 @@ Parameter | Default | Description
 --------- | ------- | -----------
 ID | required | ID of the appointment to retrieve.
 
+### QUERY PARAMETERS
+
+Parameter | Default | Description
+--------- | ------- | -----------
+include | null | Field inclusion: `user`, `doctor`, `hospital`, `visiting_reason`.
+lang | en | The language to display the resource. Either `en` or `id`.
+
 ## Get All Requested Appointments
 
 Forbidden.
@@ -394,6 +401,59 @@ ID | required | The ID of the appointment you want to reject.
 
 # Approved Appointments
 
+## Get An Approved Appointment
+
+```http
+GET /api/approved-appointments/557b32d8ec6036e00e57995a HTTP/1.1
+Accept: application/vnd.api+json
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "code": 200,
+  "message": {
+    "_id": "557b32d8ec6036e00e57995a",
+    "created_at": "2015-06-12T19:28:24.986Z",
+    "updated_at": "2015-06-14T07:19:58.135Z",
+    "user": "557b2bc80dba53980b5eaa55",
+    "hospital": "557b291afaef37c8147d717d",
+    "doctor": "557b2acf0dba53980b5eaa53",
+    "from_time": "2015-07-10T11:00:00.000Z",
+    "to_time": "2015-07-10T12:30:00.000Z",
+    "visiting_reason": "557b27f5d407310f2a74942f",
+    "approved_time": "2015-06-16T07:19:00.000Z",
+    "approved_at": "2015-06-16T02:50:00.000Z",
+    "status": "accepted"
+  }
+}
+```
+
+### HTTP Request
+
+`GET http://domain.com/api/approved-appointments/<ID>?include=<FIELDS>&lang=<LANG>`
+
+### URL PARAMETERS
+
+Parameter | Default | Description
+--------- | ------- | -----------
+ID | required | ID of the appointment to retrieve.
+
+### QUERY PARAMETERS
+
+Parameter | Default | Description
+--------- | ------- | -----------
+include | null | Field inclusion: `user`, `doctor`, `hospital`, `visiting_reason`.
+lang | en | The language to display the resource. Either `en` or `id`.
+
+### RESPONSE BODY
+Field | Description
+--------- | -----------
+status | `waiting`: the patient not yet confirmed the appointment time. `accepted`: the patient accepted the appointment and ready to go to hospital. `cancelled`: the patient cancelled the appointment.
+
+<aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
+
 ## Get All Approved Appointment In A Hospital
 
 ```http
@@ -434,7 +494,7 @@ Get all approved appointments in a hospital, sorted ascending by approved time a
 
 ### HTTP Request
 
-`GET http://domain.com/api/approved-appointments?hospital=<ID>&page=<PAGE>&include=<FIELDS>`
+`GET http://domain.com/api/approved-appointments?hospital=<ID>&page=<PAGE>&include=<FIELDS>&lang=<LANG>`
 
 ### QUERY PARAMETERS
 
@@ -490,3 +550,5 @@ Parameter | Default | Description
 --------- | ------- | -----------
 id | required | The appointment's ID.
 approved_time | required | The exact time to be proposed to the patient.
+
+<aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
