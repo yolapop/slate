@@ -257,6 +257,8 @@ Accept: application/vnd.api+json
 }
 ```
 
+> If success, the response header is `201 Created` with the resource in the body and emit `new apt` event via socket.io to the related hospital channel.
+
 Make an appointment to a doctor in a hospital. This is the appointment that hospital admin will reject or approve.
 
 ### REQUEST BODY
@@ -270,4 +272,4 @@ visiting_reason | required | The complaint's ID. Can be found in `Specialization
 from_time | required | Start time of the visit.
 to_time | required | End time of the visit.
 
-> If success, the response header is `201 Created` with the resource in the body and emit `new apt` event via socket.io to the related hospital channel.
+<aside class="warning">If you're not using an API key, this API call will return <pre>403 Forbidden</pre>.</aside>
