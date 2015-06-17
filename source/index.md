@@ -199,6 +199,8 @@ complaints | null | List of complaints in this specialty. English version is req
 
 # Requested Appointments
 
+Requested Appointments is Waiting List, i.e the appointments that have to be **approved** or **rejected** by a hospital admin.
+
 ## Get A Requested Appointment
 
 ```http
@@ -311,14 +313,16 @@ Accept: application/vnd.api+json
 
 > If success, the response header is `201 Created` with the resource in the body.
 
-> Event `new apt` will be emitted to the related hospital channel with data below. `data` is the newly created resource, `count` is total item in the collection.
+> Event `new apt` will be emitted to the related hospital channel with data below.
 
 ```json
 {
-  "data": { ... },
+  "data": { "user": "..." },
   "count": 10
 }
 ```
+
+> `data` is the newly created appointment, `count` is total item in the Waiting List.
 
 Make an appointment to a doctor in a hospital. This is the appointment that a hospital admin will reject or approve.
 
@@ -334,7 +338,6 @@ from_time | required | Start time of the visit.
 to_time | required | End time of the visit.
 
 <aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
-
 
 # Rejected Appointments
 
@@ -353,3 +356,24 @@ Accept: application/vnd.api+json
   "id": "557d6c43f6d022100c1bd2fa"
 }
 ```
+
+> If success, the response header is `201 Created` with the resource in the body.
+
+> Event `rjct apt` will be emitted to the related hospital channel with data below.
+
+```json
+{
+  "data": { "user": "..." },
+  "count": 10
+}
+```
+
+> `data` is the newly rejected appointment, `count` is total item in the Waiting List.
+
+Make an appointment to a doctor in a hospital. This is the appointment that a hospital admin will reject or approve.
+
+### REQUEST BODY
+
+Field | Default | Description
+--------- | ------- | -----------
+ID | required | The ID of the appointment you want to reject.
