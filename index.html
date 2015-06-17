@@ -81,13 +81,13 @@
 <p>If success, the response header is <code class="prettyprint">201 Created</code> with the resource in the body</p>
 </blockquote>
 
-<p>This API is for administrators only.</p>
+<p><strong>This API is for administrators only.</strong></p>
 
 <h3 id="request-body">REQUEST BODY</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
+<th>Field</th>
 <th>Default</th>
 <th>Description</th>
 </tr>
@@ -115,7 +115,7 @@
 <tr>
 <td>email</td>
 <td>required</td>
-<td>Email for login.</td>
+<td>Email for login. Must be unique.</td>
 </tr>
 <tr>
 <td>password</td>
@@ -149,7 +149,7 @@
 </tr>
 </tbody></table>
 
-<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return `403 Forbidden`.</aside>
+<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return <pre>403 Forbidden</pre>.</aside>
 
 <h1 id="doctors">Doctors</h1>
 
@@ -196,13 +196,13 @@
 <p>If success, the response header is <code class="prettyprint">201 Created</code> with the resource in the body</p>
 </blockquote>
 
-<p>This API is for administrators only.</p>
+<p><strong>This API is for administrators only.</strong></p>
 
 <h3 id="request-body">REQUEST BODY</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
+<th>Field</th>
 <th>Default</th>
 <th>Description</th>
 </tr>
@@ -245,12 +245,12 @@
 <tr>
 <td>schedules</td>
 <td>null</td>
-<td>List of doctor&rsquo;s schedule. (See <code class="prettyprint">SCHEDULES BODY</code>)</td>
+<td>List of doctor&rsquo;s schedules. (See <code class="prettyprint">SCHEDULES BODY</code>)</td>
 </tr>
 <tr>
 <td>hospitals</td>
 <td>null</td>
-<td>Hospitals&rsquo; ID where the doctor works.</td>
+<td>List of hospitals&rsquo; ID where the doctor works.</td>
 </tr>
 </tbody></table>
 
@@ -258,7 +258,7 @@
 
 <table><thead>
 <tr>
-<th>Parameter</th>
+<th>Field</th>
 <th>Default</th>
 <th>Description</th>
 </tr>
@@ -285,7 +285,7 @@
 </tr>
 </tbody></table>
 
-<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return `403 Forbidden`.</aside>
+<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return <pre>403 Forbidden</pre>.</aside>
 
 <h1 id="specializations">Specializations</h1>
 
@@ -314,13 +314,13 @@
 <p>If success, the response header is <code class="prettyprint">201 Created</code> with the resource in the body</p>
 </blockquote>
 
-<p>This API is for administrators only.</p>
+<p><strong>This API is for administrators only.</strong></p>
 
 <h3 id="request-body">REQUEST BODY</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
+<th>Field</th>
 <th>Default</th>
 <th>Description</th>
 </tr>
@@ -352,7 +352,146 @@
 </tr>
 </tbody></table>
 
-<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return `403 Forbidden`.</aside>
+<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return <pre>403 Forbidden</pre>.</aside>
+
+<h1 id="requested-appointments">Requested Appointments</h1>
+
+<h2 id="get-all-requested-appointments">Get All Requested Appointments</h2>
+
+<p>Forbidden.</p>
+
+<h2 id="get-all-requested-appointments-in-a-hospital">Get All Requested Appointments In A Hospital</h2>
+<pre class="highlight http"><code><span class="nf">GET</span> <span class="nn">/api/appointments?hospital=557b4a8dd0cd9dcc10e35a59&amp;page=1&amp;include=visiting_reason</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"page_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"item_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"list"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557d6c43f6d022100c1bd2fa"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-14T11:57:55.440Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-14T14:40:01.185Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b2bc80dba53980b5eaa55"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"hospital"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b291afaef37c8147d717d"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"doctor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b2acf0dba53980b5eaa53"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"from_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-10T11:00:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"to_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-10T12:30:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"visiting_reason"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b27f5d407310f2a74942f"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Kids consultation"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+      </span><span class="err">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Get all requested appointments in a hospital, sorted ascending by appointment time and creation time. This list is paginated with 10 items per page.</p>
+
+<h3 id="query-parameters">QUERY PARAMETERS</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>1</td>
+<td>The page you want to fetch.</td>
+</tr>
+<tr>
+<td>hospital</td>
+<td>required</td>
+<td>The hospital&rsquo;s ID.</td>
+</tr>
+<tr>
+<td>include</td>
+<td>null</td>
+<td>Field inclusion: <code class="prettyprint">user</code>, <code class="prettyprint">doctor</code>, <code class="prettyprint">hospital</code>, <code class="prettyprint">visiting_reason</code>.</td>
+</tr>
+<tr>
+<td>lang</td>
+<td>en</td>
+<td>The language to display the resource.</td>
+</tr>
+</tbody></table>
+
+<aside class="warning">If you&rsquo;re not using an API key, this API call will return <pre>403 Forbidden</pre>.</aside>
+
+<h2 id="request-an-appointment-to-a-hospital">Request An Appointment To A Hospital</h2>
+<pre class="highlight http"><code><span class="nf">POST</span> <span class="nn">/api/appointments</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+
+{
+  "user": "557b2bc80dba53980b5eaa55",
+  "hospital": "557b291afaef37c8147d717d",
+  "doctor": "557b2acf0dba53980b5eaa53",
+  "visiting_reason": "557b27f5d407310f2a74942f",
+  "from_time": "2015-07-10T11:00:00.000Z",
+  "to_time": "2015-07-10T12:30:00.000Z"
+}
+</code></pre>
+
+<blockquote>
+<p>If success, the response header is <code class="prettyprint">201 Created</code> with the resource in the body and emit <code class="prettyprint">new apt</code> event via socket.io to the related hospital channel.</p>
+</blockquote>
+
+<p>Make an appointment to a doctor in a hospital. This is the appointment that hospital admin will reject or approve.</p>
+
+<h3 id="request-body">REQUEST BODY</h3>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>user</td>
+<td>required</td>
+<td>The patient&rsquo;s ID. (Patient = user in our system)</td>
+</tr>
+<tr>
+<td>hospital</td>
+<td>required</td>
+<td>The hospital&rsquo;s ID.</td>
+</tr>
+<tr>
+<td>doctor</td>
+<td>required</td>
+<td>The doctor&rsquo;s ID.</td>
+</tr>
+<tr>
+<td>visiting_reason</td>
+<td>required</td>
+<td>The complaint&rsquo;s ID. Can be found in <code class="prettyprint">Specialization</code> collection.</td>
+</tr>
+<tr>
+<td>from_time</td>
+<td>required</td>
+<td>Start time of the visit.</td>
+</tr>
+<tr>
+<td>to_time</td>
+<td>required</td>
+<td>End time of the visit.</td>
+</tr>
+</tbody></table>
+
+<aside class="warning">If you&rsquo;re not using an API key, this API call will return <pre>403 Forbidden</pre>.</aside>
 
           <h1 id="errors">Errors</h1>
 
@@ -360,7 +499,7 @@
 
 <table><thead>
 <tr>
-<th>Error Code</th>
+<th>Code</th>
 <th>Meaning</th>
 </tr>
 </thead><tbody>
@@ -387,6 +526,10 @@
 <tr>
 <td>406</td>
 <td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json.</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Conflict &ndash; You tried to create a duplicate resource.</td>
 </tr>
 <tr>
 <td>410</td>
