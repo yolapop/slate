@@ -48,7 +48,7 @@
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>Internal use only.</p>
+<p>Internal use only. All traffic through this API must be in HTTPS.</p>
 
 <h1 id="authentication">Authentication</h1>
 
@@ -58,10 +58,10 @@
 
 <h2 id="get-all-hospitals">Get All Hospitals</h2>
 
-<p>Not implemented</p>
+<p>Not yet implemented.</p>
 
 <h2 id="create-new-hospital">Create New Hospital</h2>
-<pre class="highlight http"><code><span class="nf">POST</span> <span class="nn">/hospitals</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<pre class="highlight http"><code><span class="nf">POST</span> <span class="nn">/api/hospitals</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
 <span class="na">Accept</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
 
@@ -84,51 +84,9 @@
 <p>If success, the response header is 201 with the resource in the body</p>
 </blockquote>
 
-<h1 id="kittens">Kittens</h1>
+<p>This API is for administrator only.</p>
 
-<h2 id="get-all-kittens">Get All Kittens</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Isis"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-
-<p>This endpoint retrieves all kittens.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/kittens</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
+<h3 id="request-body">REQUEST BODY</h3>
 
 <table><thead>
 <tr>
@@ -138,69 +96,199 @@
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>name</td>
+<td>required</td>
+<td>The hospital name.</td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>region</td>
+<td>required</td>
+<td>The ID of region where the hospital is in.</td>
+</tr>
+<tr>
+<td>address</td>
+<td>null</td>
+<td>The hospital address.</td>
+</tr>
+<tr>
+<td>latlong</td>
+<td>required</td>
+<td>Two elements array that contains latitute and longitude of the hospital. It&rsquo;s required for search purpose.</td>
+</tr>
+<tr>
+<td>email</td>
+<td>required</td>
+<td>Email for login.</td>
+</tr>
+<tr>
+<td>password</td>
+<td>required</td>
+<td>Password for login.</td>
+</tr>
+<tr>
+<td>insurances</td>
+<td>null</td>
+<td>List of insurances that the hospital supports.</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>null</td>
+<td>The hospital&rsquo;s phone number.</td>
+</tr>
+<tr>
+<td>fax</td>
+<td>null</td>
+<td>The hospital&rsquo;s fax number.</td>
+</tr>
+<tr>
+<td>doctors</td>
+<td>null</td>
+<td>List of doctors&rsquo; ID who work in the hospital.</td>
+</tr>
+<tr>
+<td>logo_url</td>
+<td>null</td>
+<td>URL of hospital logo. Width: 250px.</td>
 </tr>
 </tbody></table>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
+<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return 403 Forbidden.</aside>
 
-<h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h1 id="doctors">Doctors</h1>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<h2 id="get-all-doctors">Get All Doctors</h2>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens/3"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+<p>403 Forbidden</p>
+
+<h2 id="get-all-doctors-in-a-hospital">Get All Doctors In A Hospital</h2>
+
+<p>Not yet implemented.</p>
+
+<h2 id="create-new-doctor">Create New Doctor</h2>
+<pre class="highlight http"><code><span class="nf">POST</span> <span class="nn">/api/doctors</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+
+{
+  "name": "Eric R. Tate",
+  "str_no": "1234567890",
+  "email": "EricRTate@rhyta.com",
+  "phone": "+19375656998",
+  "specialization": "557b4a94d0cd9dcc10e35a5b",
+  "since": "2015-06-16T00:00:00.000Z",
+  "until": "2016-06-16T00:00:00.000Z",
+  "schedules": [
+    {
+      day: 1,
+      hospital: "557b27f5d407310f2a74942f"
+      from: { hour: 8, minute: 0 },
+      to: { hour: 9, minute: 0 }
+    },
+    {
+      day: 2,
+      hospital: "557d6c4bf6d022100c1bd2fb"
+      from: { hour: 11, minute: 30 },
+      to: { hour: 12, minute: 45 }
+    }
+  ],
+  "hospitals": [ "557b27f5d407310f2a74942f", "557d6c4bf6d022100c1bd2fb" ]
+}
 </code></pre>
 
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>If success, the response header is 201 with the resource in the body</p>
 </blockquote>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Isis"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
 
-<p>This endpoint retrieves a specific kitten.</p>
+<p>This API is for administrator only.</p>
 
-<aside class="warning">If you&rsquo;re not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="request-body">REQUEST BODY</h3>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the cat to retrieve</td>
+<td>name</td>
+<td>required</td>
+<td>The doctor&rsquo;s name.</td>
+</tr>
+<tr>
+<td>str_no</td>
+<td>required</td>
+<td>Surat Tanda Registrasi.</td>
+</tr>
+<tr>
+<td>email</td>
+<td>required</td>
+<td>The doctor&rsquo;s work email.</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>required</td>
+<td>The doctor&rsquo;s work phone number.</td>
+</tr>
+<tr>
+<td>specialization</td>
+<td>required</td>
+<td>The ID of doctor&rsquo;s specialization</td>
+</tr>
+<tr>
+<td>since</td>
+<td>required</td>
+<td>Registration date to Indokter.</td>
+</tr>
+<tr>
+<td>until</td>
+<td>required</td>
+<td>Expiration date from Indokter.</td>
+</tr>
+<tr>
+<td>schedules</td>
+<td>null</td>
+<td>List of doctor&rsquo;s schedule. (See SCHEDULES BODY)</td>
+</tr>
+<tr>
+<td>hospitals</td>
+<td>null</td>
+<td>Hospitals&rsquo; ID where the doctor works.</td>
 </tr>
 </tbody></table>
+
+<h3 id="schedules-body">SCHEDULES BODY</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>day</td>
+<td>required</td>
+<td>Number of work day. (1: monday, 2: tuesday, etc)</td>
+</tr>
+<tr>
+<td>hospital</td>
+<td>required</td>
+<td>The hospital ID for this schedule.</td>
+</tr>
+<tr>
+<td>from</td>
+<td>hour: 7, minute: 0</td>
+<td>Start time.</td>
+</tr>
+<tr>
+<td>to</td>
+<td>hour: 7, minute: 0</td>
+<td>End time.</td>
+</tr>
+</tbody></table>
+
+<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return 403 Forbidden.</aside>
 
           <h1 id="errors">Errors</h1>
 
