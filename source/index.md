@@ -138,10 +138,10 @@ phone | required | The doctor's work phone number.
 specialization | required | The ID of doctor's specialization.
 since | required | Registration date to Indokter. (format ISO8601 UTC)
 until | required | Expiration date from Indokter. (format ISO8601 UTC)
-schedules | null | List of doctor's schedules. (See `SCHEDULES BODY`)
+schedules | null | List of doctor's schedules. (See `SCHEDULES FIELD`)
 hospitals | null | List of hospitals' ID where the doctor works.
 
-### SCHEDULES BODY
+### SCHEDULES FIELD
 
 Field | Default | Description
 --------- | ------- | -----------
@@ -385,7 +385,7 @@ Accept: application/vnd.api+json
 
 > `data` is the newly rejected appointment, `count` is total item in the Waiting List.
 
-Make an appointment to a doctor in a hospital. This is the appointment that a hospital admin will reject or approve.
+Reject an appointment in the Waiting List. Must supply the appointment ID.
 
 ### HTTP Request
 
@@ -430,6 +430,14 @@ Accept: application/vnd.api+json
 }
 ```
 
+Get the appointment that's been approved by a hospital admin.
+
+The response will have a `status` field that is one of these values: 
+
+* `waiting`: the patient not yet confirmed the appointment time. 
+* `accepted`: the patient accepted the appointment and ready to go to hospital. 
+* `cancelled`: the patient cancelled the appointment.
+
 ### HTTP Request
 
 `GET http://domain.com/api/approved-appointments/<ID>?include=<FIELDS>&lang=<LANG>`
@@ -446,11 +454,6 @@ Parameter | Default | Description
 --------- | ------- | -----------
 include | null | Field inclusion: `user`, `doctor`, `hospital`, `visiting_reason`.
 lang | en | The language to display the resource. Either `en` or `id`.
-
-### RESPONSE BODY
-Field | Description
---------- | -----------
-status | `waiting`: the patient not yet confirmed the appointment time. `accepted`: the patient accepted the appointment and ready to go to hospital. `cancelled`: the patient cancelled the appointment.
 
 <aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
 
@@ -492,6 +495,12 @@ Accept: application/vnd.api+json
 
 Get all approved appointments in a hospital, sorted ascending by approved time and creation time. This list is paginated with 10 items per page.
 
+The response will have a `status` field that is one of these values: 
+
+* `waiting`: the patient not yet confirmed the appointment time. 
+* `accepted`: the patient accepted the appointment and ready to go to hospital. 
+* `cancelled`: the patient cancelled the appointment.
+
 ### HTTP Request
 
 `GET http://domain.com/api/approved-appointments?hospital=<ID>&page=<PAGE>&include=<FIELDS>&lang=<LANG>`
@@ -504,11 +513,6 @@ page | 1 | The page you want to fetch.
 hospital | required | The hospital's ID.
 include | null | Field inclusion: `user`, `doctor`, `hospital`, `visiting_reason`.
 lang | en | The language to display the resource. Either `en` or `id`.
-
-### RESPONSE BODY
-Field | Description
---------- | -----------
-status | `waiting`: the patient not yet confirmed the appointment time. `accepted`: the patient accepted the appointment and ready to go to hospital. `cancelled`: the patient cancelled the appointment.
 
 <aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
 
@@ -538,7 +542,7 @@ Accept: application/vnd.api+json
 
 > `data` is the newly approved appointment, `count` is total item in the Waiting List.
 
-Approve an appointment in the Waiting List. Must supply the approved time that's in the range of start time and end time.
+Approve an appointment in the Waiting List. Must supply the approved time that's in the range of start time and end time. The newly approved appointment will have a `status` field with value `waiting`.
 
 ### HTTP Request
 
@@ -550,5 +554,99 @@ Parameter | Default | Description
 --------- | ------- | -----------
 id | required | The appointment's ID.
 approved_time | required | The exact time to be proposed to the patient.
+
+<aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
+
+## Update An Approved Appointment
+
+```http
+PATCH /api/approved-appointments/557b32d8ec6036e00e57995a HTTP/1.1
+Content-Type: application/vnd.api+json
+Accept: application/vnd.api+json
+
+{
+  "status": "accepted"
+}
+```
+
+> If success, the response header is `200 OK` with the updated resource in the body.
+
+> Event `status apt` will be emitted to the related hospital channel with data below that contains the updated appointment.
+
+```json
+{
+  "data": { "user": "..." }
+}
+```
+
+Update an approved appointment. We only support updating the `status` field. The purpose is to be used by patient to **accept** or **cancel** the proposed time.
+
+### HTTP Request
+
+`PATCH http://domain.com/api/approved-appointments/<ID>`
+
+### URL PARAMETERS
+
+Parameter | Description
+--------- | -----------
+id | The appointment's ID.
+
+### REQUEST BODY
+
+Parameter | Default | Description
+--------- | ------- | -----------
+status | required | The status of the approved appointment.
+
+<aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
+
+# Users
+
+Or `Patient`
+
+## Get A User
+
+Not yet implemented.
+
+## Get All Users
+
+Not yet implemented.
+
+## Create New User
+
+```http
+POST /api/users HTTP/1.1
+Content-Type: application/vnd.api+json
+Accept: application/vnd.api+json
+
+{
+  "name": "Sansa Stark",
+  "email": "sansa.cute@stark.com",
+  "phone": "12345678",
+  "birthdate": "1996-06-03T00:00:00.000Z",
+  "gender": "F",
+  "married": "true",
+  "returning": "false"
+}
+```
+
+> If success, the response header is `201 Created` with the resource in the body.
+
+Create new user / patient.
+
+### HTTP Request
+
+`POST http://domain.com/api/users`
+
+### REQUEST BODY
+
+Parameter | Default | Description
+--------- | ------- | -----------
+name | required | User's name.
+email | required | User's email. Must be unique.
+phone | required | User's phone number.
+birthdate | null | User's birthdate. (format ISO8601 UTC)
+gender | required | Either `f` or `m`.
+married | false | Flag whether user is married or not.
+returning | false | If false, the user is a new user and has not made an appointment.
 
 <aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
