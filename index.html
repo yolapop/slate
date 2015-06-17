@@ -507,8 +507,13 @@
 <blockquote>
 <p>If success, the response header is <code class="prettyprint">201 Created</code> with the resource in the body.</p>
 
-<p>Emit <code class="prettyprint">new apt</code> event to the related hospital channel.</p>
+<p>Event <code class="prettyprint">new apt</code> will be emitted to the related hospital channel with data below. <code class="prettyprint">data</code> is the newly created resource, <code class="prettyprint">count</code> is total item in the collection.</p>
 </blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="err">}</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 
 <p>Make an appointment to a doctor in a hospital. This is the appointment that a hospital admin will reject or approve.</p>
 
@@ -555,9 +560,21 @@
 
 <aside class="warning">If you&rsquo;re not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
 
-<h2 id="update-an-appointment">Update An Appointment</h2>
+<h1 id="rejected-appointments">Rejected Appointments</h1>
+
+<h2 id="get-a-rejected-appointment">Get A Rejected Appointment</h2>
 
 <p>Not yet implemented.</p>
+
+<h2 id="reject-an-appointment">Reject An Appointment</h2>
+<pre class="highlight http"><code><span class="nf">POST</span> <span class="nn">/api/rejected-appointments</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+
+{
+  "id": "557d6c43f6d022100c1bd2fa"
+}
+</code></pre>
 
           <h1 id="errors">Errors</h1>
 
