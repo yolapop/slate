@@ -18,22 +18,23 @@ search: true
 
 # Introduction
 
-Internal use only.
+Internal use only. All traffic through this API must be in HTTPS.
 
 # Authentication
 
 TODO
 
+
 # Hospitals
 
 ## Get All Hospitals
 
-Not implemented
+Not yet implemented.
 
 ## Create New Hospital
 
 ```http
-POST /hospitals HTTP/1.1
+POST /api/hospitals HTTP/1.1
 Content-Type: application/vnd.api+json
 Accept: application/vnd.api+json
 
@@ -54,111 +55,95 @@ Accept: application/vnd.api+json
 
 > If success, the response header is 201 with the resource in the body
 
-# Kittens
+This API is for administrator only.
 
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Isis",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/kittens`
-
-### Query Parameters
+### REQUEST BODY
 
 Parameter | Default | Description
 --------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+name | required | The hospital name.
+region | required | The ID of region where the hospital is in.
+address | null | The hospital address.
+latlong | required | Two elements array that contains latitute and longitude of the hospital. It's required for search purpose.
+email | required | Email for login.
+password | required | Password for login.
+insurances | null | List of insurances that the hospital supports.
+phone | null | The hospital's phone number.
+fax | null | The hospital's fax number.
+doctors | null | List of doctors' ID who work in the hospital.
+logo_url | null | URL of hospital logo. Width: 250px.
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
+<aside class="warning">If you're not using an administrator API key, this API call will return 403 Forbidden.</aside>
 
-## Get a Specific Kitten
+# Doctors
 
-```ruby
-require 'kittn'
+## Get All Doctors
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+403 Forbidden
 
-```python
-import kittn
+## Get All Doctors In A Hospital
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+Not yet implemented.
 
-```shell
-curl "http://example.com/api/kittens/3"
-  -H "Authorization: meowmeowmeow"
-```
+## Create New Doctor
 
-> The above command returns JSON structured like this:
+```http
+POST /api/doctors HTTP/1.1
+Content-Type: application/vnd.api+json
+Accept: application/vnd.api+json
 
-```json
 {
-  "id": 2,
-  "name": "Isis",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "name": "Eric R. Tate",
+  "str_no": "1234567890",
+  "email": "EricRTate@rhyta.com",
+  "phone": "+19375656998",
+  "specialization": "557b4a94d0cd9dcc10e35a5b",
+  "since": "2015-06-16T00:00:00.000Z",
+  "until": "2016-06-16T00:00:00.000Z",
+  "schedules": [
+    {
+      day: 1,
+      hospital: "557b27f5d407310f2a74942f"
+      from: { hour: 8, minute: 0 },
+      to: { hour: 9, minute: 0 }
+    },
+    {
+      day: 2,
+      hospital: "557d6c4bf6d022100c1bd2fb"
+      from: { hour: 11, minute: 30 },
+      to: { hour: 12, minute: 45 }
+    }
+  ],
+  "hospitals": [ "557b27f5d407310f2a74942f", "557d6c4bf6d022100c1bd2fb" ]
 }
 ```
 
-This endpoint retrieves a specific kitten.
+> If success, the response header is 201 with the resource in the body
 
-<aside class="warning">If you're not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
+This API is for administrator only.
 
-### HTTP Request
+### REQUEST BODY
 
-`GET http://example.com/kittens/<ID>`
+Parameter | Default | Description
+--------- | ------- | -----------
+name | required | The doctor's name.
+str_no | required | Surat Tanda Registrasi.
+email | required | The doctor's work email.
+phone | required | The doctor's work phone number.
+specialization | required | The ID of doctor's specialization
+since | required | Registration date to Indokter.
+until | required | Expiration date from Indokter.
+schedules | null | List of doctor's schedule. (See SCHEDULES BODY)
+hospitals | null | Hospitals' ID where the doctor works.
 
-### URL Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the cat to retrieve
+### SCHEDULES BODY
 
+Parameter | Default | Description
+--------- | ------- | -----------
+day | required | Number of work day. (1: monday, 2: tuesday, etc)
+hospital | required | The hospital ID for this schedule.
+from | hour: 7, minute: 0 | Start time.
+to | hour: 7, minute: 0 | End time.
+
+<aside class="warning">If you're not using an administrator API key, this API call will return 403 Forbidden.</aside>
