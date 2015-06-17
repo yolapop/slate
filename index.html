@@ -418,6 +418,27 @@
 </tr>
 </tbody></table>
 
+<h3 id="query-parameters">QUERY PARAMETERS</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>include</td>
+<td>null</td>
+<td>Field inclusion: <code class="prettyprint">user</code>, <code class="prettyprint">doctor</code>, <code class="prettyprint">hospital</code>, <code class="prettyprint">visiting_reason</code>.</td>
+</tr>
+<tr>
+<td>lang</td>
+<td>en</td>
+<td>The language to display the resource. Either <code class="prettyprint">en</code> or <code class="prettyprint">id</code>.</td>
+</tr>
+</tbody></table>
+
 <h2 id="get-all-requested-appointments">Get All Requested Appointments</h2>
 
 <p>Forbidden.</p>
@@ -631,6 +652,90 @@
 
 <h1 id="approved-appointments">Approved Appointments</h1>
 
+<h2 id="get-an-approved-appointment">Get An Approved Appointment</h2>
+<pre class="highlight http"><code><span class="nf">GET</span> <span class="nn">/api/approved-appointments/557b32d8ec6036e00e57995a</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b32d8ec6036e00e57995a"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-12T19:28:24.986Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-14T07:19:58.135Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b2bc80dba53980b5eaa55"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"hospital"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b291afaef37c8147d717d"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"doctor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b2acf0dba53980b5eaa53"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"from_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-10T11:00:00.000Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"to_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-10T12:30:00.000Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"visiting_reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b27f5d407310f2a74942f"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"approved_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-16T07:19:00.000Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"approved_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-16T02:50:00.000Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"accepted"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://domain.com/api/approved-appointments/&lt;ID&gt;?include=&lt;FIELDS&gt;&amp;lang=&lt;LANG&gt;</code></p>
+
+<h3 id="url-parameters">URL PARAMETERS</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>required</td>
+<td>ID of the appointment to retrieve.</td>
+</tr>
+</tbody></table>
+
+<h3 id="query-parameters">QUERY PARAMETERS</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>include</td>
+<td>null</td>
+<td>Field inclusion: <code class="prettyprint">user</code>, <code class="prettyprint">doctor</code>, <code class="prettyprint">hospital</code>, <code class="prettyprint">visiting_reason</code>.</td>
+</tr>
+<tr>
+<td>lang</td>
+<td>en</td>
+<td>The language to display the resource. Either <code class="prettyprint">en</code> or <code class="prettyprint">id</code>.</td>
+</tr>
+</tbody></table>
+
+<h3 id="response-body">RESPONSE BODY</h3>
+
+<table><thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>status</td>
+<td><code class="prettyprint">waiting</code>: the patient not yet confirmed the appointment time. <code class="prettyprint">accepted</code>: the patient accepted the appointment and ready to go to hospital. <code class="prettyprint">cancelled</code>: the patient cancelled the appointment.</td>
+</tr>
+</tbody></table>
+
+<aside class="warning">If you&rsquo;re not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
+
 <h2 id="get-all-approved-appointment-in-a-hospital">Get All Approved Appointment In A Hospital</h2>
 <pre class="highlight http"><code><span class="nf">GET</span> <span class="nn">/api/approved-appointments?hospital=557b291afaef37c8147d717d</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Accept</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
@@ -669,7 +774,7 @@
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET http://domain.com/api/approved-appointments?hospital=&lt;ID&gt;&amp;page=&lt;PAGE&gt;&amp;include=&lt;FIELDS&gt;</code></p>
+<p><code class="prettyprint">GET http://domain.com/api/approved-appointments?hospital=&lt;ID&gt;&amp;page=&lt;PAGE&gt;&amp;include=&lt;FIELDS&gt;&amp;lang=&lt;LANG&gt;</code></p>
 
 <h3 id="query-parameters">QUERY PARAMETERS</h3>
 
@@ -770,6 +875,8 @@
 <td>The exact time to be proposed to the patient.</td>
 </tr>
 </tbody></table>
+
+<aside class="warning">If you&rsquo;re not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
 
           <h1 id="errors">Errors</h1>
 
