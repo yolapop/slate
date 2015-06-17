@@ -13,7 +13,7 @@
 
       <script>
         $(function() {
-          setupLanguages(["http","ruby","python","shell"]);
+          setupLanguages(["http"]);
         });
       </script>
   </head>
@@ -29,9 +29,6 @@
       <img src="images/logo.png" />
         <div class="lang-selector">
               <a href="#" data-language-name="http">http</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
-              <a href="#" data-language-name="shell">shell</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -48,11 +45,11 @@
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>Internal use only. All traffic through this API must be in HTTPS.</p>
+<p>Internal use only. All traffic through this API must be in HTTPS. TODO: make this <a href="http://jsonapi.org/format">JSON API</a> compliant.</p>
 
 <h1 id="authentication">Authentication</h1>
 
-<p>TODO</p>
+<p>TODO: make API key.</p>
 
 <h1 id="hospitals">Hospitals</h1>
 
@@ -81,10 +78,10 @@
 </code></pre>
 
 <blockquote>
-<p>If success, the response header is 201 with the resource in the body</p>
+<p>If success, the response header is <code class="prettyprint">201 Created</code> with the resource in the body</p>
 </blockquote>
 
-<p>This API is for administrator only.</p>
+<p>This API is for administrators only.</p>
 
 <h3 id="request-body">REQUEST BODY</h3>
 
@@ -152,13 +149,13 @@
 </tr>
 </tbody></table>
 
-<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return 403 Forbidden.</aside>
+<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return `403 Forbidden`.</aside>
 
 <h1 id="doctors">Doctors</h1>
 
 <h2 id="get-all-doctors">Get All Doctors</h2>
 
-<p>403 Forbidden</p>
+<p>Forbidden.</p>
 
 <h2 id="get-all-doctors-in-a-hospital">Get All Doctors In A Hospital</h2>
 
@@ -196,10 +193,10 @@
 </code></pre>
 
 <blockquote>
-<p>If success, the response header is 201 with the resource in the body</p>
+<p>If success, the response header is <code class="prettyprint">201 Created</code> with the resource in the body</p>
 </blockquote>
 
-<p>This API is for administrator only.</p>
+<p>This API is for administrators only.</p>
 
 <h3 id="request-body">REQUEST BODY</h3>
 
@@ -223,7 +220,7 @@
 <tr>
 <td>email</td>
 <td>required</td>
-<td>The doctor&rsquo;s work email.</td>
+<td>The doctor&rsquo;s work email, must be unique.</td>
 </tr>
 <tr>
 <td>phone</td>
@@ -233,22 +230,22 @@
 <tr>
 <td>specialization</td>
 <td>required</td>
-<td>The ID of doctor&rsquo;s specialization</td>
+<td>The ID of doctor&rsquo;s specialization.</td>
 </tr>
 <tr>
 <td>since</td>
 <td>required</td>
-<td>Registration date to Indokter.</td>
+<td>Registration date to Indokter. (format ISO8601 UTC)</td>
 </tr>
 <tr>
 <td>until</td>
 <td>required</td>
-<td>Expiration date from Indokter.</td>
+<td>Expiration date from Indokter. (format ISO8601 UTC)</td>
 </tr>
 <tr>
 <td>schedules</td>
 <td>null</td>
-<td>List of doctor&rsquo;s schedule. (See SCHEDULES BODY)</td>
+<td>List of doctor&rsquo;s schedule. (See <code class="prettyprint">SCHEDULES BODY</code>)</td>
 </tr>
 <tr>
 <td>hospitals</td>
@@ -278,23 +275,88 @@
 </tr>
 <tr>
 <td>from</td>
-<td>hour: 7, minute: 0</td>
-<td>Start time.</td>
+<td>h:7, m:0</td>
+<td>Start time of working.</td>
 </tr>
 <tr>
 <td>to</td>
-<td>hour: 7, minute: 0</td>
-<td>End time.</td>
+<td>h:7, m:0</td>
+<td>End time of working.</td>
 </tr>
 </tbody></table>
 
-<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return 403 Forbidden.</aside>
+<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return `403 Forbidden`.</aside>
+
+<h1 id="specializations">Specializations</h1>
+
+<h2 id="get-all-specializations">Get All Specializations</h2>
+
+<p>Not yet implemented.</p>
+
+<h2 id="create-new-specialization">Create New Specialization</h2>
+<pre class="highlight http"><code><span class="nf">POST</span> <span class="nn">/api/specializations</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+
+{
+  "formal_name": { en: "Pediatrician", id: "Spesialis Anak" },
+  "display_name": { en: "Kids", id: "Anak" },
+  "abbr": { en: "MD", id: "SpA" },
+  "category": "specialty",
+  "complaints": [
+    { en: "Kids consultation", id: "Konsultasi anak" },
+    { en: "Cough", id: "Batuk" }
+  ]
+}
+</code></pre>
+
+<blockquote>
+<p>If success, the response header is <code class="prettyprint">201 Created</code> with the resource in the body</p>
+</blockquote>
+
+<p>This API is for administrators only.</p>
+
+<h3 id="request-body">REQUEST BODY</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>formal_name</td>
+<td>required</td>
+<td>Formal name of specialization. English version is required.</td>
+</tr>
+<tr>
+<td>display_name</td>
+<td>required</td>
+<td>Display name of specialization. English version is required.</td>
+</tr>
+<tr>
+<td>abbr</td>
+<td>required</td>
+<td>Abbreviated job title of specialization. English version is required.</td>
+</tr>
+<tr>
+<td>category</td>
+<td>required</td>
+<td>Either <code class="prettyprint">specialty</code>, <code class="prettyprint">dentist</code>, or <code class="prettyprint">generic</code>.</td>
+</tr>
+<tr>
+<td>complaints</td>
+<td>null</td>
+<td>List of complaints in this specialty. English version is required.</td>
+</tr>
+</tbody></table>
+
+<aside class="warning">If you&rsquo;re not using an administrator API key, this API call will return `403 Forbidden`.</aside>
 
           <h1 id="errors">Errors</h1>
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&rsquo;s frontmatter. Files are included in the order listed.</aside>
-
-<p>The Kittn API uses the following error codes:</p>
+<p>The Indokter API uses the following error codes, some of it are not yet implemented:</p>
 
 <table><thead>
 <tr>
@@ -304,39 +366,35 @@
 </thead><tbody>
 <tr>
 <td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
+<td>Bad Request &ndash; Your request sucks.</td>
 </tr>
 <tr>
 <td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
+<td>Unauthorized &ndash; Your API key is wrong.</td>
 </tr>
 <tr>
 <td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
+<td>Forbidden &ndash; Not available. Can&rsquo;t get what you wanted.</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
+<td>Not Found &ndash; The resource is not found.</td>
 </tr>
 <tr>
 <td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
+<td>Method Not Allowed &ndash; You tried to access a resource with an invalid method.</td>
 </tr>
 <tr>
 <td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
+<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json.</td>
 </tr>
 <tr>
 <td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
+<td>Gone &ndash; The resource requested has been removed from our servers.</td>
 </tr>
 <tr>
 <td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
+<td>Too Many Requests &ndash; You&rsquo;re requesting too many resources! Slow down!</td>
 </tr>
 <tr>
 <td>500</td>
@@ -352,9 +410,6 @@
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="http">http</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
-                <a href="#" data-language-name="shell">shell</a>
           </div>
       </div>
     </div>
