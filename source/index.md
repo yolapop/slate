@@ -3,9 +3,6 @@ title: Indokter (Temp) API Documentation
 
 language_tabs:
   - http
-  - ruby
-  - python
-  - shell
 
 toc_footers:
   - <a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a>
@@ -18,11 +15,11 @@ search: true
 
 # Introduction
 
-Internal use only. All traffic through this API must be in HTTPS.
+Internal use only. All traffic through this API must be in HTTPS. TODO: make this [JSON API](http://jsonapi.org/format) compliant.
 
 # Authentication
 
-TODO
+TODO: make API key.
 
 
 # Hospitals
@@ -53,9 +50,9 @@ Accept: application/vnd.api+json
 }
 ```
 
-> If success, the response header is 201 with the resource in the body
+> If success, the response header is `201 Created` with the resource in the body
 
-This API is for administrator only.
+This API is for administrators only.
 
 ### REQUEST BODY
 
@@ -73,13 +70,13 @@ fax | null | The hospital's fax number.
 doctors | null | List of doctors' ID who work in the hospital.
 logo_url | null | URL of hospital logo. Width: 250px.
 
-<aside class="warning">If you're not using an administrator API key, this API call will return 403 Forbidden.</aside>
+<aside class="warning">If you're not using an administrator API key, this API call will return `403 Forbidden`.</aside>
 
 # Doctors
 
 ## Get All Doctors
 
-403 Forbidden
+Forbidden.
 
 ## Get All Doctors In A Hospital
 
@@ -118,9 +115,9 @@ Accept: application/vnd.api+json
 }
 ```
 
-> If success, the response header is 201 with the resource in the body
+> If success, the response header is `201 Created` with the resource in the body
 
-This API is for administrator only.
+This API is for administrators only.
 
 ### REQUEST BODY
 
@@ -128,14 +125,13 @@ Parameter | Default | Description
 --------- | ------- | -----------
 name | required | The doctor's name.
 str_no | required | Surat Tanda Registrasi.
-email | required | The doctor's work email.
+email | required | The doctor's work email, must be unique.
 phone | required | The doctor's work phone number.
-specialization | required | The ID of doctor's specialization
-since | required | Registration date to Indokter.
-until | required | Expiration date from Indokter.
-schedules | null | List of doctor's schedule. (See SCHEDULES BODY)
+specialization | required | The ID of doctor's specialization.
+since | required | Registration date to Indokter. (format ISO8601 UTC)
+until | required | Expiration date from Indokter. (format ISO8601 UTC)
+schedules | null | List of doctor's schedule. (See `SCHEDULES BODY`)
 hospitals | null | Hospitals' ID where the doctor works.
-
 
 ### SCHEDULES BODY
 
@@ -143,7 +139,48 @@ Parameter | Default | Description
 --------- | ------- | -----------
 day | required | Number of work day. (1: monday, 2: tuesday, etc)
 hospital | required | The hospital ID for this schedule.
-from | hour: 7, minute: 0 | Start time.
-to | hour: 7, minute: 0 | End time.
+from | h:7, m:0 | Start time of working.
+to | h:7, m:0 | End time of working.
 
-<aside class="warning">If you're not using an administrator API key, this API call will return 403 Forbidden.</aside>
+<aside class="warning">If you're not using an administrator API key, this API call will return `403 Forbidden`.</aside>
+
+# Specializations
+
+## Get All Specializations
+
+Not yet implemented.
+
+## Create New Specialization
+
+```http
+POST /api/specializations HTTP/1.1
+Content-Type: application/vnd.api+json
+Accept: application/vnd.api+json
+
+{
+  "formal_name": { en: "Pediatrician", id: "Spesialis Anak" },
+  "display_name": { en: "Kids", id: "Anak" },
+  "abbr": { en: "MD", id: "SpA" },
+  "category": "specialty",
+  "complaints": [
+    { en: "Kids consultation", id: "Konsultasi anak" },
+    { en: "Cough", id: "Batuk" }
+  ]
+}
+```
+
+> If success, the response header is `201 Created` with the resource in the body
+
+This API is for administrators only.
+
+### REQUEST BODY
+
+Parameter | Default | Description
+--------- | ------- | -----------
+formal_name | required | Formal name of specialization. English version is required.
+display_name | required | Display name of specialization. English version is required.
+abbr | required | Abbreviated job title of specialization. English version is required.
+category | required | Either `specialty`, `dentist`, or `generic`.
+complaints | null | List of complaints in this specialty. English version is required.
+
+<aside class="warning">If you're not using an administrator API key, this API call will return `403 Forbidden`.</aside>
