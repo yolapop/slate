@@ -283,6 +283,10 @@ Accept: application/vnd.api+json
 
 Get all requested appointments in a hospital, sorted ascending by appointment time and creation time. This list is paginated with 10 items per page.
 
+### HTTP Request
+
+`GET http://domain.com/api/appointments?hospital=<ID>&page=<PAGE>&include=<FIELDS>`
+
 ### QUERY PARAMETERS
 
 Parameter | Default | Description
@@ -290,7 +294,7 @@ Parameter | Default | Description
 page | 1 | The page you want to fetch.
 hospital | required | The hospital's ID.
 include | null | Field inclusion: `user`, `doctor`, `hospital`, `visiting_reason`.
-lang | en | The language to display the resource.
+lang | en | The language to display the resource. Either `en` or `id`.
 
 <aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
 
@@ -325,6 +329,10 @@ Accept: application/vnd.api+json
 > `data` is the newly created appointment, `count` is total item in the Waiting List.
 
 Make an appointment to a doctor in a hospital. This is the appointment that a hospital admin will reject or approve.
+
+### HTTP Request
+
+`POST http://domain.com/api/appointments`
 
 ### REQUEST BODY
 
@@ -372,8 +380,113 @@ Accept: application/vnd.api+json
 
 Make an appointment to a doctor in a hospital. This is the appointment that a hospital admin will reject or approve.
 
+### HTTP Request
+
+`POST http://domain.com/api/rejected-appointments`
+
 ### REQUEST BODY
 
 Field | Default | Description
 --------- | ------- | -----------
 ID | required | The ID of the appointment you want to reject.
+
+<aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
+
+# Approved Appointments
+
+## Get All Approved Appointment In A Hospital
+
+```http
+GET /api/approved-appointments?hospital=557b291afaef37c8147d717d HTTP/1.1
+Accept: application/vnd.api+json
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "code": 200,
+  "message": {
+    "page_count": 1,
+    "item_count": 1,
+    "current_page": 1,
+    "list": [
+      {
+        "_id": "557b32d8ec6036e00e57995a",
+        "created_at": "2015-06-12T19:28:24.986Z",
+        "updated_at": "2015-06-14T07:19:58.135Z",
+        "user": "557b2bc80dba53980b5eaa55",
+        "hospital": "557b291afaef37c8147d717d",
+        "doctor": "557b2acf0dba53980b5eaa53",
+        "from_time": "2015-07-10T11:00:00.000Z",
+        "to_time": "2015-07-10T12:30:00.000Z",
+        "visiting_reason": "557b27f5d407310f2a74942f",
+        "approved_time": "2015-06-16T07:19:00.000Z",
+        "approved_at": "2015-06-16T02:50:00.000Z",
+        "status": "waiting"
+      }
+    ]
+  }
+}
+```
+
+Get all approved appointments in a hospital, sorted ascending by approved time and creation time. This list is paginated with 10 items per page.
+
+### HTTP Request
+
+`GET http://domain.com/api/approved-appointments?hospital=<ID>&page=<PAGE>&include=<FIELDS>`
+
+### QUERY PARAMETERS
+
+Parameter | Default | Description
+--------- | ------- | -----------
+page | 1 | The page you want to fetch.
+hospital | required | The hospital's ID.
+include | null | Field inclusion: `user`, `doctor`, `hospital`, `visiting_reason`.
+lang | en | The language to display the resource. Either `en` or `id`.
+
+### RESPONSE BODY
+Field | Description
+--------- | -----------
+status | `waiting`: the patient not yet confirmed the appointment time. `accepted`: the patient accepted the appointment and ready to go to hospital. `cancelled`: the patient cancelled the appointment.
+
+<aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
+
+## Approve An Appointment
+
+```http
+POST /api/approved-appointments HTTP/1.1
+Content-Type: application/vnd.api+json
+Accept: application/vnd.api+json
+
+{
+  "id": "557b32d8ec6036e00e57995a",
+  "approved_time": "2015-06-16T07:19:00.000Z"
+}
+```
+
+> If success, the response header is `201 Created` with the resource in the body.
+
+> Event `ok apt` will be emitted to the related hospital channel with data below.
+
+```json
+{
+  "data": { "user": "..." },
+  "count": 10
+}
+```
+
+> `data` is the newly approved appointment, `count` is total item in the Waiting List.
+
+Approve an appointment in the Waiting List. Must supply the approved time that's in the range of start time and end time.
+
+### HTTP Request
+
+`POST http://domain.com/api/approved-appointments`
+
+### REQUEST BODY
+
+Parameter | Default | Description
+--------- | ------- | -----------
+id | required | The appointment's ID.
+approved_time | required | The exact time to be proposed to the patient.
