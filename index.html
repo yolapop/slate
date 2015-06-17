@@ -368,7 +368,7 @@
 
 <h1 id="requested-appointments">Requested Appointments</h1>
 
-<p>Requested Appointments is Waiting List, i.e the appointments that have to be <strong>approved</strong> or <strong>rejected</strong> by a hospital admin.</p>
+<p>Requested Appointments a.k.a. Waiting List, i.e the appointments that have to be <strong>approved</strong> or <strong>rejected</strong> by a hospital admin.</p>
 
 <h2 id="get-a-requested-appointment">Get A Requested Appointment</h2>
 <pre class="highlight http"><code><span class="nf">GET</span> <span class="nn">/api/appointments/557d6c43f6d022100c1bd2fa</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
@@ -376,7 +376,7 @@
 </code></pre>
 
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above request returns JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
@@ -449,7 +449,7 @@
 </code></pre>
 
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above request returns JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
@@ -658,7 +658,7 @@
 </code></pre>
 
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above request returns JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
@@ -732,13 +732,17 @@
 
 <aside class="warning">If you&rsquo;re not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
 
+<h2 id="get-all-approved-appointments">Get All Approved Appointments</h2>
+
+<p>Forbidden.</p>
+
 <h2 id="get-all-approved-appointment-in-a-hospital">Get All Approved Appointment In A Hospital</h2>
 <pre class="highlight http"><code><span class="nf">GET</span> <span class="nn">/api/approved-appointments?hospital=557b291afaef37c8147d717d</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Accept</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
 </code></pre>
 
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The above request returns JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
@@ -767,14 +771,6 @@
 </span></code></pre>
 
 <p>Get all approved appointments in a hospital, sorted ascending by approved time and creation time. This list is paginated with 10 items per page.</p>
-
-<p>The response will have a <code class="prettyprint">status</code> field that is one of these values: </p>
-
-<ul>
-<li><code class="prettyprint">waiting</code>: the patient not yet confirmed the appointment time. </li>
-<li><code class="prettyprint">accepted</code>: the patient accepted the appointment and ready to go to hospital. </li>
-<li><code class="prettyprint">cancelled</code>: the patient cancelled the appointment.</li>
-</ul>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -920,7 +916,7 @@
 <tr>
 <td>status</td>
 <td>required</td>
-<td>The status of the approved appointment.</td>
+<td>The status of the approved appointment. Either <code class="prettyprint">accepted</code>, <code class="prettyprint">waiting</code>, or <code class="prettyprint">cancelled</code>.</td>
 </tr>
 </tbody></table>
 
@@ -928,7 +924,7 @@
 
 <h1 id="users">Users</h1>
 
-<p>Or <code class="prettyprint">Patient</code></p>
+<p>A.k.a. <code class="prettyprint">Patient</code></p>
 
 <h2 id="get-a-user">Get A User</h2>
 
