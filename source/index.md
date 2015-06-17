@@ -54,6 +54,10 @@ Accept: application/vnd.api+json
 
 **This API is for administrators only.**
 
+### HTTP Request
+
+`POST http://domain.com/api/hospitals`
+
 ### REQUEST BODY
 
 Field | Default | Description
@@ -119,6 +123,10 @@ Accept: application/vnd.api+json
 
 **This API is for administrators only.**
 
+### HTTP Request
+
+`POST http://domain.com/api/doctors`
+
 ### REQUEST BODY
 
 Field | Default | Description
@@ -173,6 +181,10 @@ Accept: application/vnd.api+json
 
 **This API is for administrators only.**
 
+### HTTP Request
+
+`POST http://domain.com/api/specializations`
+
 ### REQUEST BODY
 
 Field | Default | Description
@@ -186,6 +198,46 @@ complaints | null | List of complaints in this specialty. English version is req
 <aside class="warning">If you're not using an administrator API key, this API call will return <code>403 Forbidden</code>.</aside>
 
 # Requested Appointments
+
+## Get A Requested Appointment
+
+```http
+GET /api/appointments/557d6c43f6d022100c1bd2fa HTTP/1.1
+Accept: application/vnd.api+json
+```
+
+> The above command returns JSON structured like this:
+
+```json
+{
+  "code": 200,
+  "message": {
+    "_id": "557d6c43f6d022100c1bd2fa",
+    "created_at": "2015-06-14T11:57:55.440Z",
+    "updated_at": "2015-06-14T14:40:01.185Z",
+    "user": "557b2bc80dba53980b5eaa55",
+    "hospital": "557b291afaef37c8147d717d",
+    "doctor": "557b2acf0dba53980b5eaa53",
+    "from_time": "2015-07-10T11:00:00.000Z",
+    "to_time": "2015-07-10T12:30:00.000Z",
+    "visiting_reason": "557b27f5d407310f2a74942f"
+  }
+}
+```
+
+Fetch a single requested appointment, i.e. an appointment that is not yet **approved** nor **rejected** by a hospital admin.
+
+If the appointment is already **approved** or **rejected** you will get a `301 Moved Permanently` response with the associated `Location` header.
+
+### HTTP Request
+
+`GET http://domain.com/api/appointments/<ID>`
+
+### URL PARAMETERS
+
+Parameter | Default | Description
+--------- | ------- | -----------
+ID | required | ID of the appointment to retrieve.
 
 ## Get All Requested Appointments
 
@@ -220,7 +272,7 @@ Accept: application/vnd.api+json
         "visiting_reason": {
           "_id": "557b27f5d407310f2a74942f",
           "en": "Kids consultation"
-        },
+        }
       }
     ]
   }
@@ -257,15 +309,17 @@ Accept: application/vnd.api+json
 }
 ```
 
-> If success, the response header is `201 Created` with the resource in the body and emit `new apt` event via socket.io to the related hospital channel.
+> If success, the response header is `201 Created` with the resource in the body.
 
-Make an appointment to a doctor in a hospital. This is the appointment that hospital admin will reject or approve.
+> Emit `new apt` event to the related hospital channel.
+
+Make an appointment to a doctor in a hospital. This is the appointment that a hospital admin will reject or approve.
 
 ### REQUEST BODY
 
 Field | Default | Description
 --------- | ------- | -----------
-user | required | The patient's ID. (Patient = user in our system)
+user | required | The patient's ID. (patient = user in our system)
 hospital | required | The hospital's ID.
 doctor | required | The doctor's ID.
 visiting_reason | required | The complaint's ID. Can be found in `Specialization` collection.
@@ -273,3 +327,8 @@ from_time | required | Start time of the visit.
 to_time | required | End time of the visit.
 
 <aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
+
+## Update An Appointment
+
+Not yet implemented.
+
