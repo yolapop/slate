@@ -36,6 +36,7 @@ GEM
     hooks (0.4.0)
       uber (~> 0.0.4)
     i18n (0.7.0)
+    io-console (0.4.3)
     json (1.8.2)
     kramdown (1.7.0)
     libv8 (3.16.14.7)
@@ -124,13 +125,15 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  io-console (~> 0.4.3)
   middleman (~> 3.3.10)
   middleman-gh-pages (~> 0.0.3)
   middleman-syntax (~> 2.0.0)
+  multi_json
   rake (~> 10.4.2)
   redcarpet (~> 3.2.2)
   rouge (~> 1.8.0)
   therubyracer (~> 0.12.1)
 
 BUNDLED WITH
-   1.10.3
+   1.10.4
