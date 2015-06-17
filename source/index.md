@@ -70,7 +70,7 @@ fax | null | The hospital's fax number.
 doctors | null | List of doctors' ID who work in the hospital.
 logo_url | null | URL of hospital logo. Width: 250px.
 
-<aside class="warning">If you're not using an administrator API key, this API call will return <pre>403 Forbidden</pre>.</aside>
+<aside class="warning">If you're not using an administrator API key, this API call will return <code>403 Forbidden</code>.</aside>
 
 # Doctors
 
@@ -142,7 +142,7 @@ hospital | required | The hospital ID for this schedule.
 from | h:7, m:0 | Start time of working.
 to | h:7, m:0 | End time of working.
 
-<aside class="warning">If you're not using an administrator API key, this API call will return <pre>403 Forbidden</pre>.</aside>
+<aside class="warning">If you're not using an administrator API key, this API call will return <code>403 Forbidden</code>.</aside>
 
 # Specializations
 
@@ -183,7 +183,7 @@ abbr | required | Abbreviated job title of specialization. English version is re
 category | required | Either `specialty`, `dentist`, or `generic`.
 complaints | null | List of complaints in this specialty. English version is required.
 
-<aside class="warning">If you're not using an administrator API key, this API call will return <pre>403 Forbidden</pre>.</aside>
+<aside class="warning">If you're not using an administrator API key, this API call will return <code>403 Forbidden</code>.</aside>
 
 # Requested Appointments
 
@@ -238,7 +238,7 @@ hospital | required | The hospital's ID.
 include | null | Field inclusion: `user`, `doctor`, `hospital`, `visiting_reason`.
 lang | en | The language to display the resource.
 
-<aside class="warning">If you're not using an API key, this API call will return <pre>403 Forbidden</pre>.</aside>
+<aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
 
 ## Request An Appointment To A Hospital
 
@@ -272,4 +272,4 @@ visiting_reason | required | The complaint's ID. Can be found in `Specialization
 from_time | required | Start time of the visit.
 to_time | required | End time of the visit.
 
-<aside class="warning">If you're not using an API key, this API call will return <pre>403 Forbidden</pre>.</aside>
+<aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
