@@ -83,6 +83,10 @@
 
 <p><strong>This API is for administrators only.</strong></p>
 
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST http://domain.com/api/hospitals</code></p>
+
 <h3 id="request-body">REQUEST BODY</h3>
 
 <table><thead>
@@ -197,6 +201,10 @@
 </blockquote>
 
 <p><strong>This API is for administrators only.</strong></p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST http://domain.com/api/doctors</code></p>
 
 <h3 id="request-body">REQUEST BODY</h3>
 
@@ -316,6 +324,10 @@
 
 <p><strong>This API is for administrators only.</strong></p>
 
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST http://domain.com/api/specializations</code></p>
+
 <h3 id="request-body">REQUEST BODY</h3>
 
 <table><thead>
@@ -356,6 +368,54 @@
 
 <h1 id="requested-appointments">Requested Appointments</h1>
 
+<h2 id="get-a-requested-appointment">Get A Requested Appointment</h2>
+<pre class="highlight http"><code><span class="nf">GET</span> <span class="nn">/api/appointments/557d6c43f6d022100c1bd2fa</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557d6c43f6d022100c1bd2fa"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-14T11:57:55.440Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-06-14T14:40:01.185Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b2bc80dba53980b5eaa55"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"hospital"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b291afaef37c8147d717d"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"doctor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b2acf0dba53980b5eaa53"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"from_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-10T11:00:00.000Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"to_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2015-07-10T12:30:00.000Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"visiting_reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b27f5d407310f2a74942f"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Fetch a single requested appointment, i.e. an appointment that is not yet <strong>approved</strong> nor <strong>rejected</strong> by a hospital admin.</p>
+
+<p>If the appointment is already <strong>approved</strong> or <strong>rejected</strong> you will get a <code class="prettyprint">301 Moved Permanently</code> response with the associated <code class="prettyprint">Location</code> header.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET http://domain.com/api/appointments/&lt;ID&gt;</code></p>
+
+<h3 id="url-parameters">URL PARAMETERS</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>required</td>
+<td>ID of the appointment to retrieve.</td>
+</tr>
+</tbody></table>
+
 <h2 id="get-all-requested-appointments">Get All Requested Appointments</h2>
 
 <p>Forbidden.</p>
@@ -387,8 +447,8 @@
         </span><span class="s2">"visiting_reason"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
           </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"557b27f5d407310f2a74942f"</span><span class="p">,</span><span class="w">
           </span><span class="s2">"en"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Kids consultation"</span><span class="w">
-        </span><span class="p">},</span><span class="w">
-      </span><span class="err">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -445,10 +505,12 @@
 </code></pre>
 
 <blockquote>
-<p>If success, the response header is <code class="prettyprint">201 Created</code> with the resource in the body and emit <code class="prettyprint">new apt</code> event via socket.io to the related hospital channel.</p>
+<p>If success, the response header is <code class="prettyprint">201 Created</code> with the resource in the body.</p>
+
+<p>Emit <code class="prettyprint">new apt</code> event to the related hospital channel.</p>
 </blockquote>
 
-<p>Make an appointment to a doctor in a hospital. This is the appointment that hospital admin will reject or approve.</p>
+<p>Make an appointment to a doctor in a hospital. This is the appointment that a hospital admin will reject or approve.</p>
 
 <h3 id="request-body">REQUEST BODY</h3>
 
@@ -462,7 +524,7 @@
 <tr>
 <td>user</td>
 <td>required</td>
-<td>The patient&rsquo;s ID. (Patient = user in our system)</td>
+<td>The patient&rsquo;s ID. (patient = user in our system)</td>
 </tr>
 <tr>
 <td>hospital</td>
@@ -492,6 +554,10 @@
 </tbody></table>
 
 <aside class="warning">If you&rsquo;re not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
+
+<h2 id="update-an-appointment">Update An Appointment</h2>
+
+<p>Not yet implemented.</p>
 
           <h1 id="errors">Errors</h1>
 
