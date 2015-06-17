@@ -311,7 +311,14 @@ Accept: application/vnd.api+json
 
 > If success, the response header is `201 Created` with the resource in the body.
 
-> Emit `new apt` event to the related hospital channel.
+> Event `new apt` will be emitted to the related hospital channel with data below. `data` is the newly created resource, `count` is total item in the collection.
+
+```json
+{
+  "data": { ... },
+  "count": 10
+}
+```
 
 Make an appointment to a doctor in a hospital. This is the appointment that a hospital admin will reject or approve.
 
@@ -328,7 +335,21 @@ to_time | required | End time of the visit.
 
 <aside class="warning">If you're not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
 
-## Update An Appointment
+
+# Rejected Appointments
+
+## Get A Rejected Appointment
 
 Not yet implemented.
 
+## Reject An Appointment
+
+```http
+POST /api/rejected-appointments HTTP/1.1
+Content-Type: application/vnd.api+json
+Accept: application/vnd.api+json
+
+{
+  "id": "557d6c43f6d022100c1bd2fa"
+}
+```
