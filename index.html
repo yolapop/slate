@@ -253,7 +253,7 @@
 <tr>
 <td>schedules</td>
 <td>null</td>
-<td>List of doctor&rsquo;s schedules. (See <code class="prettyprint">SCHEDULES BODY</code>)</td>
+<td>List of doctor&rsquo;s schedules. (See <code class="prettyprint">SCHEDULES FIELD</code>)</td>
 </tr>
 <tr>
 <td>hospitals</td>
@@ -262,7 +262,7 @@
 </tr>
 </tbody></table>
 
-<h3 id="schedules-body">SCHEDULES BODY</h3>
+<h3 id="schedules-field">SCHEDULES FIELD</h3>
 
 <table><thead>
 <tr>
@@ -626,7 +626,7 @@
 <p><code class="prettyprint">data</code> is the newly rejected appointment, <code class="prettyprint">count</code> is total item in the Waiting List.</p>
 </blockquote>
 
-<p>Make an appointment to a doctor in a hospital. This is the appointment that a hospital admin will reject or approve.</p>
+<p>Reject an appointment in the Waiting List. Must supply the appointment ID.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -679,6 +679,16 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
+<p>Get the appointment that&rsquo;s been approved by a hospital admin.</p>
+
+<p>The response will have a <code class="prettyprint">status</code> field that is one of these values: </p>
+
+<ul>
+<li><code class="prettyprint">waiting</code>: the patient not yet confirmed the appointment time. </li>
+<li><code class="prettyprint">accepted</code>: the patient accepted the appointment and ready to go to hospital. </li>
+<li><code class="prettyprint">cancelled</code>: the patient cancelled the appointment.</li>
+</ul>
+
 <h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">GET http://domain.com/api/approved-appointments/&lt;ID&gt;?include=&lt;FIELDS&gt;&amp;lang=&lt;LANG&gt;</code></p>
@@ -720,20 +730,6 @@
 </tr>
 </tbody></table>
 
-<h3 id="response-body">RESPONSE BODY</h3>
-
-<table><thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>status</td>
-<td><code class="prettyprint">waiting</code>: the patient not yet confirmed the appointment time. <code class="prettyprint">accepted</code>: the patient accepted the appointment and ready to go to hospital. <code class="prettyprint">cancelled</code>: the patient cancelled the appointment.</td>
-</tr>
-</tbody></table>
-
 <aside class="warning">If you&rsquo;re not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
 
 <h2 id="get-all-approved-appointment-in-a-hospital">Get All Approved Appointment In A Hospital</h2>
@@ -772,6 +768,14 @@
 
 <p>Get all approved appointments in a hospital, sorted ascending by approved time and creation time. This list is paginated with 10 items per page.</p>
 
+<p>The response will have a <code class="prettyprint">status</code> field that is one of these values: </p>
+
+<ul>
+<li><code class="prettyprint">waiting</code>: the patient not yet confirmed the appointment time. </li>
+<li><code class="prettyprint">accepted</code>: the patient accepted the appointment and ready to go to hospital. </li>
+<li><code class="prettyprint">cancelled</code>: the patient cancelled the appointment.</li>
+</ul>
+
 <h3 id="http-request">HTTP Request</h3>
 
 <p><code class="prettyprint">GET http://domain.com/api/approved-appointments?hospital=&lt;ID&gt;&amp;page=&lt;PAGE&gt;&amp;include=&lt;FIELDS&gt;&amp;lang=&lt;LANG&gt;</code></p>
@@ -807,20 +811,6 @@
 </tr>
 </tbody></table>
 
-<h3 id="response-body">RESPONSE BODY</h3>
-
-<table><thead>
-<tr>
-<th>Field</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>status</td>
-<td><code class="prettyprint">waiting</code>: the patient not yet confirmed the appointment time. <code class="prettyprint">accepted</code>: the patient accepted the appointment and ready to go to hospital. <code class="prettyprint">cancelled</code>: the patient cancelled the appointment.</td>
-</tr>
-</tbody></table>
-
 <aside class="warning">If you&rsquo;re not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
 
 <h2 id="approve-an-appointment">Approve An Appointment</h2>
@@ -849,7 +839,7 @@
 <p><code class="prettyprint">data</code> is the newly approved appointment, <code class="prettyprint">count</code> is total item in the Waiting List.</p>
 </blockquote>
 
-<p>Approve an appointment in the Waiting List. Must supply the approved time that&rsquo;s in the range of start time and end time.</p>
+<p>Approve an appointment in the Waiting List. Must supply the approved time that&rsquo;s in the range of start time and end time. The newly approved appointment will have a <code class="prettyprint">status</code> field with value <code class="prettyprint">waiting</code>.</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -873,6 +863,150 @@
 <td>approved_time</td>
 <td>required</td>
 <td>The exact time to be proposed to the patient.</td>
+</tr>
+</tbody></table>
+
+<aside class="warning">If you&rsquo;re not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
+
+<h2 id="update-an-approved-appointment">Update An Approved Appointment</h2>
+<pre class="highlight http"><code><span class="nf">PATCH</span> <span class="nn">/api/approved-appointments/557b32d8ec6036e00e57995a</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+
+{
+  "status": "accepted"
+}
+</code></pre>
+
+<blockquote>
+<p>If success, the response header is <code class="prettyprint">200 OK</code> with the updated resource in the body.</p>
+
+<p>Event <code class="prettyprint">status apt</code> will be emitted to the related hospital channel with data below that contains the updated appointment.</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Update an approved appointment. We only support updating the <code class="prettyprint">status</code> field. The purpose is to be used by patient to <strong>accept</strong> or <strong>cancel</strong> the proposed time.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PATCH http://domain.com/api/approved-appointments/&lt;ID&gt;</code></p>
+
+<h3 id="url-parameters">URL PARAMETERS</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>The appointment&rsquo;s ID.</td>
+</tr>
+</tbody></table>
+
+<h3 id="request-body">REQUEST BODY</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>status</td>
+<td>required</td>
+<td>The status of the approved appointment.</td>
+</tr>
+</tbody></table>
+
+<aside class="warning">If you&rsquo;re not using an API key, this API call will return <code>403 Forbidden</code>.</aside>
+
+<h1 id="users">Users</h1>
+
+<p>Or <code class="prettyprint">Patient</code></p>
+
+<h2 id="get-a-user">Get A User</h2>
+
+<p>Not yet implemented.</p>
+
+<h2 id="get-all-users">Get All Users</h2>
+
+<p>Not yet implemented.</p>
+
+<h2 id="create-new-user">Create New User</h2>
+<pre class="highlight http"><code><span class="nf">POST</span> <span class="nn">/api/users</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Content-Type</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">application/vnd.api+json</span>
+
+{
+  "name": "Sansa Stark",
+  "email": "sansa.cute@stark.com",
+  "phone": "12345678",
+  "birthdate": "1996-06-03T00:00:00.000Z",
+  "gender": "F",
+  "married": "true",
+  "returning": "false"
+}
+</code></pre>
+
+<blockquote>
+<p>If success, the response header is <code class="prettyprint">201 Created</code> with the resource in the body.</p>
+</blockquote>
+
+<p>Create new user / patient.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST http://domain.com/api/users</code></p>
+
+<h3 id="request-body">REQUEST BODY</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>required</td>
+<td>User&rsquo;s name.</td>
+</tr>
+<tr>
+<td>email</td>
+<td>required</td>
+<td>User&rsquo;s email. Must be unique.</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>required</td>
+<td>User&rsquo;s phone number.</td>
+</tr>
+<tr>
+<td>birthdate</td>
+<td>null</td>
+<td>User&rsquo;s birthdate. (format ISO8601 UTC)</td>
+</tr>
+<tr>
+<td>gender</td>
+<td>required</td>
+<td>Either <code class="prettyprint">f</code> or <code class="prettyprint">m</code>.</td>
+</tr>
+<tr>
+<td>married</td>
+<td>false</td>
+<td>Flag whether user is married or not.</td>
+</tr>
+<tr>
+<td>returning</td>
+<td>false</td>
+<td>If false, the user is a new user and has not made an appointment.</td>
 </tr>
 </tbody></table>
 
